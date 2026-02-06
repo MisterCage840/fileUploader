@@ -1,0 +1,45 @@
+<%- include("../partials/top", { title: folder.name }) %>
+
+<h2><%= folder.name %></h2>
+
+<p>
+  <a href="/folders">Back to folders</a> |
+  <a href="/folders/<%= folder.id %>/edit">Edit</a> |
+  <a href="/folders/<%= folder.id %>/share">Share</a>
+</p>
+
+<hr />
+
+<h3>Upload file</h3>
+
+<form
+  class="form form--row"
+  action="/folders/<%= folder.id %>/files"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <input type="file" name="file" required />
+  <button type="submit">Upload</button>
+</form>
+
+<p class="meta">
+  Allowed: PDF, PNG, JPG, TXT — Max: 10MB
+</p>
+
+<hr />
+
+<h3>Files in this folder</h3>
+
+<% if (!folder.files.length) { %>
+<p>No files yet.</p>
+<% } else { %>
+<ul class="list list--compact">
+  <% folder.files.forEach(f => { %>
+  <li class="list-item list-item--simple">
+    <a href="/files/<%= f.id %>"><b><%= f.originalName %></b></a>
+    <span class="meta">(<%= (f.sizeBytes / 1024).toFixed(1) %> KB)</span>
+  </li>
+  <% }) %>
+</ul>
+<% } %>
+<%- include("../partials/bottom") %>

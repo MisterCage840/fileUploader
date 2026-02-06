@@ -1,0 +1,19 @@
+<%- include("../partials/top", { title: "Login" }) %>
+<h2>Login</h2>
+
+<% if (errors.length) { %>
+<div class="alert alert--error">
+  <ul class="list list--plain">
+  <% errors.forEach(e => { %>
+  <li><%= e.msg %></li>
+  <% }) %>
+  </ul>
+</div>
+<% } %>
+
+<form class="form" method="post" action="/login">
+  <input name="email" type="email" placeholder="Email" required />
+  <input name="password" type="password" placeholder="Password" required />
+  <button type="submit">Login</button>
+</form>
+<%- include("../partials/bottom") %>

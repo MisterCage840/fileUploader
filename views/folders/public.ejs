@@ -1,0 +1,30 @@
+<%- include("../partials/top", { title: "Shared folder", showNav: false }) %>
+<h2>Shared folder: <%= share.folder.name %></h2>
+
+<p>
+  This link expires at:
+  <b><%= share.expiresAt.toISOString() %></b>
+</p>
+
+<hr/>
+
+<% if (!share.folder.files.length) { %>
+  <p>No files in this folder.</p>
+<% } else { %>
+  <ul class="list list--compact">
+    <% share.folder.files.forEach(f => { %>
+      <li class="list-item">
+        <div class="list-primary">
+          <b><%= f.originalName %></b>
+          <span class="meta">(<%= (f.sizeBytes / 1024).toFixed(1) %> KB)</span>
+        </div>
+        <div class="actions">
+          <a href="/share/<%= share.id %>/files/<%= f.id %>/download">
+            <button type="button">Download</button>
+          </a>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+<%- include("../partials/bottom") %>

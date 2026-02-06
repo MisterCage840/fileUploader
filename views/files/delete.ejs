@@ -1,0 +1,25 @@
+<%- include("../partials/top", { title: "Delete file" }) %>
+
+<h2>Delete file?</h2>
+
+<p>You are about to permanently delete:</p>
+
+<ul class="list list--compact">
+  <li class="list-item list-item--simple"><b><%= file.originalName %></b></li>
+  <li class="list-item list-item--simple">Type: <%= file.mimeType %></li>
+  <li class="list-item list-item--simple">Size: <%= file.sizeBytes %> bytes</li>
+  <li class="list-item list-item--simple">Folder: <%= file.folder.name %></li>
+</ul>
+
+<p class="warning">This cannot be undone.</p>
+
+<div class="actions">
+  <form class="form form--inline" action="/files/<%= file.id %>/delete" method="post">
+    <button type="submit">Yes, delete permanently</button>
+  </form>
+
+  <a href="/files/<%= file.id %>">
+    <button type="button">Cancel</button>
+  </a>
+</div>
+<%- include("../partials/bottom") %>

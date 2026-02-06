@@ -1,0 +1,21 @@
+<%- include("../partials/top", { title: "Edit folder" }) %>
+
+<h2>Edit folder</h2>
+
+<% if (errors.length) { %>
+<div class="alert alert--error">
+  <ul class="list list--plain">
+  <% errors.forEach(e => { %>
+  <li><%= e.msg %></li>
+  <% }) %>
+  </ul>
+</div>
+<% } %>
+
+<form class="form" method="post" action="/folders/<%= folder.id %>/edit">
+  <input name="name" value="<%= values.name %>" required />
+  <button type="submit">Save</button>
+</form>
+
+<p><a href="/folders/<%= folder.id %>">Back</a></p>
+<%- include("../partials/bottom") %>

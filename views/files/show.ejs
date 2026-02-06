@@ -1,0 +1,24 @@
+<%- include("../partials/top", { title: "File details" }) %>
+
+<h2>File details</h2>
+
+<p><b>Name:</b> <%= file.originalName %></p>
+<p><b>Type:</b> <%= file.mimeType %></p>
+<p><b>Size:</b> <%= file.sizeBytes %> bytes</p>
+<p><b>Uploaded:</b> <%= file.createdAt.toISOString() %></p>
+
+<p>
+  <b>Folder:</b>
+  <a href="/folders/<%= file.folder.id %>"><%= file.folder.name %></a>
+</p>
+
+<div class="actions">
+  <a href="/files/<%= file.id %>/download">
+    <button type="button">Download</button>
+  </a>
+
+<a href="/files/<%= file.id %>/delete">
+  <button type="button">Delete</button>
+</a>
+</div>
+<%- include("../partials/bottom") %>

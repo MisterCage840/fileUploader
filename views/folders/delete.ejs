@@ -1,0 +1,26 @@
+<%- include("../partials/top", { title: "Delete folder" }) %>
+
+<h2>Delete folder?</h2>
+
+<p>You are about to permanently delete:</p>
+
+<ul class="list list--compact">
+  <li class="list-item list-item--simple"><b><%= folder.name %></b></li>
+  <li class="list-item list-item--simple">Files inside: <%= folder.files.length %></li>
+</ul>
+
+<p class="warning">
+  All files inside this folder will be deleted.<br />
+  This action cannot be undone.
+</p>
+
+<div class="actions">
+  <form class="form form--inline" method="post" action="/folders/<%= folder.id %>/delete">
+    <button type="submit">Yes, delete folder</button>
+  </form>
+
+  <a href="/folders/<%= folder.id %>">
+    <button type="button">Cancel</button>
+  </a>
+</div>
+<%- include("../partials/bottom") %>

@@ -1,0 +1,27 @@
+<%- include("../partials/top", { title: "Folders" }) %>
+
+<h2>Your folders</h2>
+
+<p><a href="/folders/new">+ New folder</a></p>
+
+<% if (!folders.length) { %>
+<p>No folders yet.</p>
+<% } else { %>
+<ul class="list">
+  <% folders.forEach(f => { %>
+  <li class="list-item">
+    <div class="list-primary">
+      <a href="/folders/<%= f.id %>"><b><%= f.name %></b></a>
+      <span class="meta"> <%= f._count.files %> files</span>
+    </div>
+    <div class="actions">
+      <a href="/folders/<%= f.id %>/edit">Edit</a>
+      <a href="/folders/<%= f.id %>/delete">
+        <button type="button">Delete folder</button>
+      </a>
+    </div>
+  </li>
+  <% }) %>
+</ul>
+<% } %>
+<%- include("../partials/bottom") %>

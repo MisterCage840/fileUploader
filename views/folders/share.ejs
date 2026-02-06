@@ -1,0 +1,80 @@
+<%- include("../partials/top", { title: "Share folder" }) %>
+
+<h2>Share folder: <%= folder.name %></h2>
+
+<% if (errors.length) { %>
+  <div class="alert alert--error">
+    <ul class="list list--plain">
+      <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form class="form" method="post" action="/folders/<%= folder.id %>/share">
+  <label><b>Duration</b> (examples: 1d, 10d, 6h, 30m — max 30d)</label><br/>
+  <input name="duration" value="<%= values.duration %>" required />
+  <button type="submit">Generate share link</button>
+</form>
+
+<% if (token) { %>
+  <hr/>
+  <h3>✅ Share link created</h3>
+
+  <p>Send this link to anyone. It will work without login.</p>
+
+  <div class="share-box">
+    <input
+      id="shareLink"
+      class="input input--mono"
+      readonly
+      value="<%= baseUrl %>/share/<%= token %>"
+    />
+    <button type="button" id="copyBtn">Copy</button>
+    <a href="/share/<%= token %>" target="_blank" rel="noopener">
+      <button type="button">Open</button>
+    </a>
+  </div>
+
+  <p id="copyMsg" class="meta"></p>
+
+  <script>
+    const btn = document.getElementById("copyBtn");
+    const input = document.getElementById("shareLink");
+    const msg = document.getElementById("copyMsg");
+
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(input.value);
+        msg.textContent = "Copied to clipboard ✅";
+      } catch (e) {
+        input.select();
+        document.execCommand("copy");
+        msg.textContent = "Copied (fallback) ✅";
+      }
+    });
+  </script>
+<% } %>
+
+<hr/>
+
+<h3>Active share links</h3>
+
+<% const active = folder.shares.filter(s => new Date(s.expiresAt) > now); %>
+
+<% if (!active.length) { %>
+  <p>No active links yet.</p>
+<% } else { %>
+  <ul class="list list--compact">
+    <% active.forEach(s => { %>
+      <li class="list-item">
+        <a href="/share/<%= s.id %>" target="_blank" rel="noopener"><b>/share/<%= s.id %></b></a>
+        <div class="meta">
+          Expires: <%= new Date(s.expiresAt).toISOString() %>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<p><a href="/folders/<%= folder.id %>">Back to folder</a></p>
+<%- include("../partials/bottom") %>

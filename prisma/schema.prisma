@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  createdAt DateTime    @default(now())
+  password  String
+  files     File[]
+  folders   Folder[]
+  shares    ShareLink[]
+}
+
+model Folder {
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime    @default(now())
+  ownerId   String
+  files     File[]
+  owner     User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  shares    ShareLink[]
+
+  @@index([ownerId])
+}
+
+model File {
+  id           String   @id @default(uuid())
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  storagePath  String
+  createdAt    DateTime @default(now())
+  ownerId      String
+  folderId     String
+  folder       Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  owner        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@index([folderId])
+}
+
+model ShareLink {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  folderId  String
+  ownerId   String
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
