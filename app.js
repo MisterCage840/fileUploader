@@ -4,6 +4,7 @@ const express = require("express")
 const helmet = require("helmet")
 const session = require("express-session")
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store")
+console.log("app.js is running")
 
 const { prisma } = require("./lib/prisma")
 const { passport } = require("./lib/passport")
@@ -61,6 +62,7 @@ app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).send("Server error")
 })
+console.log("About to start listening..")
 
 const PORT = process.env.PORT || 3000
 
